@@ -90,7 +90,7 @@ public final class GreynoiseClient extends Client {
     }
 
     public <T> Future<T> request(final Class<T> type, final Endpoint endpoint, final MultiMap form) {
-        return this.request(type, endpoint, "", form);
+        return this.request(type, endpoint, StringUtil.EMPTY_STRING, form);
     }
 
     public <T> Future<T> request(final Class<T> type, final Endpoint endpoint, final String query) {
