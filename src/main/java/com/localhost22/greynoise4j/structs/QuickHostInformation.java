@@ -1,6 +1,6 @@
 package com.localhost22.greynoise4j.structs;
 
-public class QuickHostInformation {
+public final class QuickHostInformation {
 
     String ip;
     boolean noise;

@@ -45,14 +45,27 @@ public enum ClientType {
         this.endpoints = List.of(endpoints);
     }
 
+    /**
+     * Get the api url of the client.
+     * @return url
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Get the endpoints the type of client is allowed to use.
+     * @return endpoints.
+     */
     public List<Endpoint> getEndpoints() {
         return endpoints;
     }
 
+    /**
+     * Validate that this client may use a specified endpoint.
+     * @param endpoint endpoint
+     * @return a valid endpoint, or null
+     */
     public Endpoint validate(final Endpoint endpoint) {
         if (this.allows(endpoint)) {
             return endpoint;
@@ -60,6 +73,11 @@ public enum ClientType {
         return null;
     }
 
+    /**
+     * Return whether this client type allows the specified endpoint.
+     * @param endpoint endpoint to check
+     * @return true or false
+     */
     public boolean allows(final Endpoint endpoint) {
         return this.endpoints.contains(endpoint);
     }

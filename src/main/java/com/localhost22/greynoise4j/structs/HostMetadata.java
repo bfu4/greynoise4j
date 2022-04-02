@@ -1,6 +1,6 @@
 package com.localhost22.greynoise4j.structs;
 
-public class HostMetadata {
+public final class HostMetadata {
 
     private String asn;
     private String category;

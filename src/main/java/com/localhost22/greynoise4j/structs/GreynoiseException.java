@@ -4,7 +4,7 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.ext.web.client.HttpResponse;
 import org.jetbrains.annotations.NotNull;
 
-public class GreynoiseException extends RuntimeException {
+public final class GreynoiseException extends RuntimeException {
 
     public static GreynoiseException rateLimit(final HttpResponse<Buffer> buffer) {
         return create("Rated limited!", buffer);

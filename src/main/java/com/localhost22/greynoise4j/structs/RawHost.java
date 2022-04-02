@@ -1,6 +1,6 @@
 package com.localhost22.greynoise4j.structs;
 
-public class RawHost {
+public final class RawHost {
 
     private HashData[] hassh;
     private ScanData[] scan;

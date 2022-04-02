@@ -2,7 +2,7 @@ package com.localhost22.greynoise4j.structs;
 
 import java.util.List;
 
-public class HostContextInformation {
+public final class HostContextInformation {
 
     private String actor;
     private boolean bot;

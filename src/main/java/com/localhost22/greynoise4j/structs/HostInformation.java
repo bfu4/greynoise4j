@@ -2,7 +2,7 @@ package com.localhost22.greynoise4j.structs;
 
 import java.io.Serializable;
 
-public class HostInformation implements Serializable {
+public final class HostInformation implements Serializable {
 
     private String ip;
     private boolean noise;

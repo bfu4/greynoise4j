@@ -1,6 +1,6 @@
 package com.localhost22.greynoise4j.structs;
 
-public class HostRiotInformation {
+public final class HostRiotInformation {
     private String ip;
     private boolean riot;
     private String category;
