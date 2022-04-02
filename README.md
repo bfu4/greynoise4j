@@ -3,6 +3,10 @@ For the purpose of me trying to understand
 the Greynoise API, I implemented it (kind of) in
 Java (because I like Java's objects).
 
+## Disclaimer
+I don't have an enterprise api key so I have
+***zero*** clue if any of those methods work.
+
 ## Usage
 ```java
 // This creates a community client without an API key.
