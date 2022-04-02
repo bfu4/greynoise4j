@@ -7,6 +7,15 @@ Java (because I like Java's objects).
 I don't have an enterprise api key so I have
 ***zero*** clue if any of those methods work.
 
+## Building
+Normally I host my libraries on some sort of repository.
+Due to the nature of this project, I'm not, as of currently, deploying it to central.
+```
+$ mvn clean package
+or
+$ ./mvnw clean package
+```
+
 ## Usage
 ```java
 // This creates a community client without an API key.
