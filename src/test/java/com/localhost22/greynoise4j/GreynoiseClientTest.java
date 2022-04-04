@@ -31,12 +31,11 @@ public class GreynoiseClientTest {
     @DisplayName("Community API | Test IP (8.8.8.8) Query")
     public void testWellKnownIpQuery() throws InterruptedException {
         VertxTestContext ctx = new VertxTestContext();
-        Future<HostInformation> response = client.request(HostInformation.class, Endpoint.COMMUNITY, query);
+        Future<HostInformation> response = client.getHostInformation(query);
 
         response.onSuccess((data) -> {
             ctx.completeNow();
             Assertions.assertEquals(query, data.getIp());
-            System.out.println(data.getLastSeen());
         });
 
         Assertions.assertTrue(ctx.awaitCompletion(15, TimeUnit.SECONDS));

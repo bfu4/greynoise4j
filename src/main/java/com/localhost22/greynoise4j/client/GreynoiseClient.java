@@ -16,19 +16,34 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.WebClientOptions;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.beans.ConstructorProperties;
 
+/**
+ * The Greynoise Client is an extension of the {@link Client},
+ * in which the methods are specific to the Greynoise API.
+ */
 public final class GreynoiseClient extends Client {
 
-    private static final String USER_AGENT = "jnoise/1.0";
+    /**
+     * The known constant for the name of the client's user agent.
+     */
+    private static final String USER_AGENT = "greynoise4j/1.0";
 
-
+    /**
+     * Create a Greynoise community client that does not use an API key.
+     * @return community client
+     */
     public static GreynoiseClient community() {
         return community(StringUtil.EMPTY_STRING);
     }
 
+    /**
+     * Create a Greynoise community client that does use an api key.
+     * @param apiKey api key
+     * @return community client
+     */
     public static GreynoiseClient community(final String apiKey) {
         return community(apiKey, new WebClientOptions());
     }
@@ -62,19 +77,19 @@ public final class GreynoiseClient extends Client {
     }
 
     public Future<HostInformation> getHostInformation(final String host) {
-        return request(HostInformation.class, Endpoint.COMMUNITY, host);
+        return this.request(HostInformation.class, Endpoint.COMMUNITY, host, HttpRequest::send);
     }
 
     public Future<QuickHostInformation> getQuickHostInformation(final String host) {
-        return request(QuickHostInformation.class, Endpoint.NOISE_QUICK, host);
+        return this.request(QuickHostInformation.class, Endpoint.NOISE_QUICK, host, HttpRequest::send);
     }
 
-    public Future<QuickHostInformation> getMultiQuickHostInformation(final String... hosts) {
+    public Future<QuickHostInformation> getMultiQuickHostInformation(@NotNull final String... hosts) {
         MultiMap form = MultiMap
                 .caseInsensitiveMultiMap()
                 .add("ips", getGson().toJson(hosts));
         // TODO: I don't have a key, this might not work?. Find a way to test.
-        return request(
+        return this.request(
                 QuickHostInformation.class,
                 Endpoint.NOISE_MULTI_QUICK,
                 form
@@ -82,22 +97,21 @@ public final class GreynoiseClient extends Client {
     }
 
     public Future<HostContextInformation> getHostContextInformation(final String host) {
-        return request(HostContextInformation.class, Endpoint.NOISE_CONTEXT, host);
+        return this.request(HostContextInformation.class, Endpoint.NOISE_CONTEXT, host, HttpRequest::send);
     }
 
     public Future<HostRiotInformation> getHostRiotInformation(final String host) {
-        return request(HostRiotInformation.class, Endpoint.RIOT, host);
+        return this.request(HostRiotInformation.class, Endpoint.RIOT, host, HttpRequest::send);
     }
 
     public <T> Future<T> request(final Class<T> type, final Endpoint endpoint, final MultiMap form) {
-        return this.request(type, endpoint, StringUtil.EMPTY_STRING, form);
+        return this.request(type, endpoint, StringUtil.EMPTY_STRING, RequestHandler.getFormHandler(form));
     }
 
-    public <T> Future<T> request(final Class<T> type, final Endpoint endpoint, final String query) {
-        return this.request(type, endpoint, query, null);
-    }
-
-    public <T> Future<T> request(final Class<T> type, final Endpoint endpoint, final String queryString, @Nullable final MultiMap form) {
+    public <T> Future<T> request(final Class<T> type,
+                                 final Endpoint endpoint,
+                                 final String queryString,
+                                 final RequestHandler handler) {
         final Endpoint requestEndpoint = this.clientType.validate(endpoint);
         if (requestEndpoint == null) {
             throw new IllegalEndpointException(endpoint);
@@ -106,11 +120,7 @@ public final class GreynoiseClient extends Client {
                 .request(requestEndpoint.getMethod(), this.clientType.getUrl() + requestEndpoint.path() + queryString)
                 .putHeader("key", this.apiKey)
                 .putHeader(HttpHeaders.ACCEPT.toString(), HttpHeaderValues.APPLICATION_JSON.toString());
-        if (form != null) {
-            RequestHandler<T> handler = RequestHandler.getFormHandler(form);
-            return this.handle(handler, request, type);
-        }
-        return this.handle(HttpRequest::send, request, type);
+        return this.handle(handler, request, type);
     }
 
     public ClientType getClientType() {
