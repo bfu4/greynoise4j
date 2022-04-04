@@ -104,7 +104,7 @@ public final class HostMetadata implements GreynoiseResponse {
     }
 
     /**
-     * Get the host's organization
+     * Get the host's organization.
      * @return organization
      */
     public String getOrganization() {
