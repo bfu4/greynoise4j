@@ -3,7 +3,7 @@ package com.localhost22.greynoise4j.client;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.localhost22.greynoise4j.structs.GreynoiseException;
+import com.localhost22.greynoise4j.api.GreynoiseException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;

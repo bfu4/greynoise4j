@@ -1,4 +1,4 @@
-package com.localhost22.greynoise4j.structs;
+package com.localhost22.greynoise4j.api;
 
 import io.vertx.core.buffer.Buffer;
 import io.vertx.ext.web.client.HttpResponse;
