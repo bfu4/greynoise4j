@@ -2,6 +2,7 @@ package com.localhost22.greynoise4j.client;
 
 import com.localhost22.greynoise4j.api.ClientType;
 import com.localhost22.greynoise4j.api.Endpoint;
+import com.localhost22.greynoise4j.api.GreynoiseResponse;
 import com.localhost22.greynoise4j.api.IllegalEndpointException;
 import com.localhost22.greynoise4j.structs.HostContextInformation;
 import com.localhost22.greynoise4j.structs.HostInformation;
@@ -177,7 +178,7 @@ public final class GreynoiseClient extends Client {
      * @param <T>      type constraint
      * @return a future of the requested data type.
      */
-    public <T> Future<T> request(final Class<T> type, final Endpoint endpoint, final MultiMap form) {
+    public <T extends GreynoiseResponse> Future<T> request(final Class<T> type, final Endpoint endpoint, final MultiMap form) {
         return this.request(type, endpoint, StringUtil.EMPTY_STRING, RequestHandler.getFormHandler(form));
     }
 
@@ -190,10 +191,10 @@ public final class GreynoiseClient extends Client {
      * @param <T>         return type constraint
      * @return data or null
      */
-    public <T> Future<T> request(final Class<T> type,
-                                 final Endpoint endpoint,
-                                 final String queryString,
-                                 final RequestHandler handler) {
+    public <T extends GreynoiseResponse> Future<T> request(final Class<T> type,
+                                                           final Endpoint endpoint,
+                                                           final String queryString,
+                                                           final RequestHandler handler) {
         final Endpoint requestEndpoint = this.clientType.validate(endpoint);
         if (requestEndpoint == null) {
             throw new IllegalEndpointException(endpoint);

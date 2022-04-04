@@ -1,5 +1,7 @@
 package com.localhost22.greynoise4j.structs;
 
+import com.localhost22.greynoise4j.api.GreynoiseResponse;
+
 import java.util.List;
 
 /**
@@ -8,7 +10,7 @@ import java.util.List;
  * {@link com.localhost22.greynoise4j.client.GreynoiseClient#getHostContextInformation(String)}
  * request.
  */
-public final class HostContextInformation {
+public final class HostContextInformation implements GreynoiseResponse {
 
     /**
      * The actor.

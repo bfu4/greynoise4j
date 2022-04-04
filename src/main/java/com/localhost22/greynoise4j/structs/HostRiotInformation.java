@@ -1,19 +1,33 @@
 package com.localhost22.greynoise4j.structs;
 
-public final class HostRiotInformation {
+import com.localhost22.greynoise4j.api.GreynoiseResponse;
+
+public final class HostRiotInformation implements GreynoiseResponse {
+
     private String ip;
+
     private boolean riot;
+
     private String category;
+
     private String name;
+
     private String description;
+
     private String explanation;
+
     private String lastUpdated;
+
     private String logoUrl;
+
     private String reference;
+
     private String trustLevel;
 
+    /**
+     * Constructor to instantiate a blank information structure.
+     */
     public HostRiotInformation() {
-
     }
 
     public String getIp() {

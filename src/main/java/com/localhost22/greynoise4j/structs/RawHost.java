@@ -1,6 +1,8 @@
 package com.localhost22.greynoise4j.structs;
 
-public final class RawHost {
+import com.localhost22.greynoise4j.api.GreynoiseResponse;
+
+public final class RawHost implements GreynoiseResponse {
 
     private HashData[] hassh;
     private ScanData[] scan;
@@ -11,6 +13,9 @@ public final class RawHost {
     private boolean vpn;
     private String vpnService;
 
+    /**
+     * Constructor to instantiate a blank information structure.
+     */
     public RawHost() {
 
     }
