@@ -112,7 +112,7 @@ public final class HostMetadata implements GreynoiseResponse {
     }
 
     /**
-     * Get the host's operating system
+     * Get the host's operating system.
      * @return operating system
      */
     public String getOs() {

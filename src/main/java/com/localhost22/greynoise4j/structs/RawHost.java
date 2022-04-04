@@ -93,7 +93,7 @@ public final class RawHost implements GreynoiseResponse {
         String[] paths;
         String[] useragents;
 
-        public WebData() {
+        WebData() {
 
         }
 
