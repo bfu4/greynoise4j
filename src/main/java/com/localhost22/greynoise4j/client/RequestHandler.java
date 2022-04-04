@@ -28,6 +28,12 @@ public interface RequestHandler {
         return (req) -> req.sendForm(form);
     }
 
+    /**
+     * The definition of an {@link HttpRequest} handler, so that it may be
+     * used as a {@link RequestHandler} in syntax of a lambda.
+     * @param request request to handle
+     * @return a future that may eventually provide a http response
+     */
     Future<HttpResponse<Buffer>> handle(HttpRequest<Buffer> request);
 
 }

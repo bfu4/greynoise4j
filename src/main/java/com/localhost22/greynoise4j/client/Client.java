@@ -48,6 +48,9 @@ public abstract class Client {
         this.options = options;
         this.client = WebClient.create(vertx, options);
         this.gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
+        // Add a shutdown hook.
+        Thread hook = new Thread(this::close);
+        Runtime.getRuntime().addShutdownHook(hook);
     }
 
     /**
