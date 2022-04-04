@@ -32,6 +32,16 @@ public final class GreynoiseClient extends Client {
     private static final String USER_AGENT = "greynoise4j/1.0";
 
     /**
+     * The key of the header for the api key.
+     */
+    private static final String KEY_HEADER = "key";
+
+    /**
+     * The key used when appending json data to a {@link #getQuickHostInformation(String...)} request.
+     */
+    private static final String MULTI_IPS_KEY = "ips";
+
+    /**
      * Create a Greynoise community client that does not use an API key.
      * @return community client
      */
@@ -133,7 +143,7 @@ public final class GreynoiseClient extends Client {
     public Future<QuickHostInformation> getQuickHostInformation(@NotNull final String... hosts) {
         MultiMap form = MultiMap
                 .caseInsensitiveMultiMap()
-                .add("ips", getGson().toJson(hosts));
+                .add(MULTI_IPS_KEY, getGson().toJson(hosts));
         return this.request(
                 QuickHostInformation.class,
                 Endpoint.NOISE_MULTI_QUICK,
@@ -190,7 +200,7 @@ public final class GreynoiseClient extends Client {
         }
         HttpRequest<Buffer> request = super
                 .request(requestEndpoint.getMethod(), this.clientType.getUrl() + requestEndpoint.path() + queryString)
-                .putHeader("key", this.apiKey)
+                .putHeader(KEY_HEADER, this.apiKey)
                 .putHeader(HttpHeaders.ACCEPT.toString(), HttpHeaderValues.APPLICATION_JSON.toString());
         return this.handle(handler, request, type);
     }
