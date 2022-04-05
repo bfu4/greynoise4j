@@ -1,0 +1,37 @@
+os: linux
+dist: xenial
+language: java
+
+variables:
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+
+# jdk
+jdk:
+  - openjdk11
+
+before_install:
+  - cp settings.xml $HOME/.m2/settings.xml
+  - sudo apt-get update
+  - sudo apt-get install gnupg2 --yes
+  - openssl aes-256-cbc -K $encrypted_446e43e9c35a_key -iv $encrypted_446e43e9c35a_iv -in .build/token.gpg.enc -out .build/token.gpg -d
+  - echo $GPG_PASSPHRASE | gpg --import .build/token.gpg
+  - export GPG_TTY=$(tty)
+
+# verify the build
+.verify: &verify
+  stage: test
+  script:
+    - 'mvn $MAVEN_CLI_OPTS verify'
+  except:
+    - master
+
+# Verify merge requests using JDK8
+verify:
+  <<: *verify
+  except:
+    - master
+
+build:
+  stage: build
+  script:
+    - mvn clean package

@@ -4,7 +4,6 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.localhost22.greynoise4j.api.GreynoiseException;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -13,6 +12,7 @@ import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.WebClientOptions;
+import org.apache.hc.core5.http.HttpStatus;
 
 import java.beans.ConstructorProperties;
 
@@ -75,8 +75,13 @@ public abstract class Client {
             return null;
         }
         return result.map((resp) -> {
-            if (resp.statusCode() == HttpResponseStatus.TOO_MANY_REQUESTS.code()) {
-                throw GreynoiseException.rateLimit(resp);
+            switch (resp.statusCode()) {
+                case HttpStatus.SC_TOO_MANY_REQUESTS:
+                    throw GreynoiseException.rateLimit(resp);
+                case HttpStatus.SC_NOT_FOUND:
+                    throw GreynoiseException.create("page not found!", resp);
+                default:
+                    break;
             }
             // Gson never fails.
             return gson.fromJson(resp.bodyAsString(), type);

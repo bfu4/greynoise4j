@@ -2,6 +2,8 @@ package com.localhost22.greynoise4j.structs;
 
 import com.localhost22.greynoise4j.api.GreynoiseResponse;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -46,6 +48,31 @@ public final class HostContextInformation implements GreynoiseResponse {
      * When this host was last seen.
      */
     private String lastSeen;
+
+    /**
+     * If the host has been seen.
+     */
+    private boolean seen;
+
+    /**
+     * If the host is spoofable.
+     */
+    private boolean spoofable;
+
+    /**
+     * The tags associated with the host.
+     */
+    private String[] tags;
+
+    /**
+     * TODO: What does this mean again?
+     */
+    private boolean vpn;
+
+    /**
+     * TODO: What does this mean again?
+     */
+    private String vpnService;
 
     /**
      * Host metadata.
@@ -102,6 +129,49 @@ public final class HostContextInformation implements GreynoiseResponse {
      */
     public String getFirstSeen() {
         return firstSeen;
+    }
+
+    /**
+     * Get if the host has been seen.
+     * @return if the host has been seen
+     */
+    public boolean wasSeen() {
+        return seen;
+    }
+
+    /**
+     * Get if the host is spoofable.
+     * @return if the host is spoofable
+     */
+    public boolean isSpoofable() {
+        return spoofable;
+    }
+
+    /**
+     * TODO.
+     * @return ?
+     */
+    public boolean hasVpn() {
+        return vpn;
+    }
+
+    /**
+     * TODO.
+     * @return ?
+     */
+    public String getVpnService() {
+        return vpnService;
+    }
+
+    /**
+     * Get the host's tags.
+     * @return tags
+     */
+    public List<String> getTags() {
+        if (tags == null) {
+            return Collections.emptyList();
+        }
+        return List.of(tags);
     }
 
     /**

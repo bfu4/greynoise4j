@@ -16,7 +16,7 @@ public enum ClientType {
      * @see <a href="https://docs.greynoise.io/docs/using-the-greynoise-api">Greynoise Enterprise API</a>.
      */
     ENTERPRISE(
-            "https://api.greynoise.io/v2/",
+            "https://api.greynoise.io/v2",
             Endpoint.NOISE_QUICK,
             Endpoint.NOISE_CONTEXT,
             Endpoint.RIOT,
