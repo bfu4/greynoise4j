@@ -11,6 +11,7 @@ jdk:
   stage: test
   script:
     - 'mvn verify'
+    - 'mvn test'
   except:
     - master
 
