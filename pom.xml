@@ -85,6 +85,7 @@
                     <consoleOutput>true</consoleOutput>
                     <!-- Ignore the added apache file for an enumerator -->
                     <excludes>**/org/apache/**/*</excludes>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     <failsOnError>true</failsOnError>
                     <failOnViolation>true</failOnViolation>
                     <violationSeverity>warning</violationSeverity>

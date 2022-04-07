@@ -44,7 +44,7 @@ public abstract class Client {
      * @param options options
      */
     @ConstructorProperties({"options"})
-    Client(final Vertx vertx, final WebClientOptions options) {
+    public Client(final Vertx vertx, final WebClientOptions options) {
         this.options = options;
         this.client = WebClient.create(vertx, options);
         this.gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
@@ -83,6 +83,7 @@ public abstract class Client {
                 default:
                     break;
             }
+            System.out.println(resp.bodyAsString());
             // Gson never fails.
             return gson.fromJson(resp.bodyAsString(), type);
         });

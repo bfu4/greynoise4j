@@ -2,7 +2,6 @@ package com.localhost22.greynoise4j.structs;
 
 import com.localhost22.greynoise4j.api.GreynoiseResponse;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -65,12 +64,12 @@ public final class HostContextInformation implements GreynoiseResponse {
     private String[] tags;
 
     /**
-     * TODO: What does this mean again?
+     * Get whether the ip is associated with a vpn service.
      */
     private boolean vpn;
 
     /**
-     * TODO: What does this mean again?
+     * The service the ip is associated with, if applicable.
      */
     private String vpnService;
 
@@ -148,16 +147,16 @@ public final class HostContextInformation implements GreynoiseResponse {
     }
 
     /**
-     * TODO.
-     * @return ?
+     * Check whether the host is associated with a vpn service.
+     * @return whether the host is associated with a vpn service
      */
     public boolean hasVpn() {
         return vpn;
     }
 
     /**
-     * TODO.
-     * @return ?
+     * Get the vpn service the host is associated with, if applicable.
+     * @return vpn service, or blank
      */
     public String getVpnService() {
         return vpnService;

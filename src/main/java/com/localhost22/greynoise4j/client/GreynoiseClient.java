@@ -4,6 +4,7 @@ import com.localhost22.greynoise4j.api.ClientType;
 import com.localhost22.greynoise4j.api.Endpoint;
 import com.localhost22.greynoise4j.api.GreynoiseResponse;
 import com.localhost22.greynoise4j.api.IllegalEndpointException;
+import com.localhost22.greynoise4j.api.IpArray;
 import com.localhost22.greynoise4j.structs.HostContextInformation;
 import com.localhost22.greynoise4j.structs.HostInformation;
 import com.localhost22.greynoise4j.structs.HostRiotInformation;
@@ -141,14 +142,25 @@ public final class GreynoiseClient extends Client {
      * @param hosts the hosts to get the information of.
      * @return host information
      */
-    public Future<QuickHostInformation> getQuickHostInformation(@NotNull final String... hosts) {
-        MultiMap form = MultiMap
-                .caseInsensitiveMultiMap()
-                .add(MULTI_IPS_KEY, getGson().toJson(hosts));
-        return this.request(
-                QuickHostInformation.class,
+    public Future<QuickHostInformation[]> getQuickHostInformation(@NotNull final String... hosts) {
+        return this.requestArrayType(
+                QuickHostInformation[].class,
                 Endpoint.NOISE_MULTI_QUICK,
-                form
+                IpArray.create(hosts)
+        );
+    }
+
+    /**
+     * Get multiple hosts information using the enterprise api's {@code /noise/multi/context} route
+     * using a POST request.
+     * @param hosts the hosts to get the information of.
+     * @return host context information
+     */
+    public Future<HostContextInformation[]> getHostContextInformation(@NotNull final String... hosts) {
+        return this.requestArrayType(
+                HostContextInformation[].class,
+                Endpoint.NOISE_MULTI_CONTEXT,
+                IpArray.create(hosts)
         );
     }
 
@@ -183,6 +195,46 @@ public final class GreynoiseClient extends Client {
     }
 
     /**
+     * Request data from a specified endpoint without a query string and using any sort of json serializable data.
+     * @param type     type
+     * @param endpoint endpoint
+     * @param data     data to serialize
+     * @param <T>      type constraint
+     * @param <S>      data type constraint
+     * @return data
+     */
+    public <T extends GreynoiseResponse, S> Future<T> request(final Class<T> type, final Endpoint endpoint, final S data) {
+        return this.request(type, endpoint, StringUtil.EMPTY_STRING, (req) -> req.sendBuffer(Buffer.buffer(getGson().toJson(data))));
+    }
+
+    /**
+     * Request data using an array type from a specified endpoint without a query string and with a form.
+     * This method is primarily used for signature matching when requesting to serialize data that may return
+     * in an array.
+     * @param type     type constraint, must be an array
+     * @param endpoint endpoint
+     * @param form     form
+     * @param <T>      return type constraint
+     * @return data or null
+     */
+    public <T extends GreynoiseResponse> Future<T[]> requestArrayType(final Class<T[]> type, final Endpoint endpoint, final MultiMap form) {
+        return this.requestArrayType(type, endpoint, StringUtil.EMPTY_STRING, RequestHandler.getFormHandler(form));
+    }
+
+    /**
+     * Request data using an array type from a specified endpoint without a query string and using any sort of json serializable data.
+     * @param type     type
+     * @param endpoint endpoint
+     * @param data     data to serialize
+     * @param <T>      type constraint
+     * @param <S>      data type constraint
+     * @return data
+     */
+    public <T extends GreynoiseResponse, S> Future<T[]> requestArrayType(final Class<T[]> type, final Endpoint endpoint, final S data) {
+        return this.requestArrayType(type, endpoint, StringUtil.EMPTY_STRING, (req) -> req.sendBuffer(Buffer.buffer(getGson().toJson(data))));
+    }
+
+    /**
      * Request data from a specified endpoint with a query string and without a form.
      * @param type        type
      * @param endpoint    endpoint
@@ -195,6 +247,37 @@ public final class GreynoiseClient extends Client {
                                                            final Endpoint endpoint,
                                                            final String queryString,
                                                            final RequestHandler handler) {
+        return requestRaw(type, endpoint, queryString, handler);
+    }
+
+    /**
+     * Request data using an array type from a specified endpoint with a query string and without a form.
+     * This method is primarily used for signature matching when requesting to serialize data that may return
+     * in an array.
+     * @param type        type constraint, must be an array
+     * @param endpoint    endpoint
+     * @param queryString query string
+     * @param handler     request handler that returns a {@link io.vertx.ext.web.client.HttpResponse}
+     * @param <T>         return type constraint
+     * @return data or null
+     */
+    public <T extends GreynoiseResponse> Future<T[]> requestArrayType(final Class<T[]> type,
+                                                                      final Endpoint endpoint,
+                                                                      final String queryString,
+                                                                      final RequestHandler handler) {
+        return requestRaw(type, endpoint, queryString, handler);
+    }
+
+    /**
+     * Request raw requests data with no real type constraint, using provided type, endpoint, query string, and handler.
+     * @param type        requested return type
+     * @param endpoint    endpoint
+     * @param queryString query string
+     * @param handler     request handler
+     * @param <T>         type constraint
+     * @return data
+     */
+    private <T> Future<T> requestRaw(final Class<T> type, final Endpoint endpoint, final String queryString, final RequestHandler handler) {
         final Endpoint requestEndpoint = this.clientType.validate(endpoint);
         if (requestEndpoint == null) {
             throw new IllegalEndpointException(endpoint);

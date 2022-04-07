@@ -43,6 +43,14 @@ public enum Endpoint {
     NOISE_MULTI_QUICK("/noise/multi/quick", HttpMethod.POST),
 
     /**
+     * The Greynoise Enterprise noise/multi/context endpoint, which
+     * will get multiple ips with data returned from {@link #NOISE_CONTEXT}.
+     * This returns data that is serializable into a {@link com.localhost22.greynoise4j.structs.HostContextInformation}
+     * array, specified by a type: {@code HostContextInformation.class}.
+     */
+    NOISE_MULTI_CONTEXT("/noise/multi/context", HttpMethod.POST),
+
+    /**
      * The Greynoise Enterprise riot endpoint.
      * This will return data that is serializable into a
      * {@link com.localhost22.greynoise4j.structs.HostRiotInformation} instance.
