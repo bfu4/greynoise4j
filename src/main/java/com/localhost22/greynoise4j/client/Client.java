@@ -80,10 +80,12 @@ public abstract class Client {
                     throw GreynoiseException.rateLimit(resp);
                 case HttpStatus.SC_NOT_FOUND:
                     throw GreynoiseException.create("page not found!", resp);
+                case HttpStatus.SC_FORBIDDEN:
+                case HttpStatus.SC_UNAUTHORIZED:
+                    throw GreynoiseException.create("forbidden! perhaps an invalid api key");
                 default:
                     break;
             }
-            System.out.println(resp.bodyAsString());
             // Gson never fails.
             return gson.fromJson(resp.bodyAsString(), type);
         });

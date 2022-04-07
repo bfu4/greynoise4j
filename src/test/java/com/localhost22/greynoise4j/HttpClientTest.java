@@ -60,6 +60,9 @@ public final class HttpClientTest {
         Assertions.assertTrue(ctx.awaitCompletion(TIMEOUT, TimeUnit.SECONDS));
     }
 
+    /**
+     * The test case's {@link Client http client} implementation.
+     */
     private static class ClientImpl extends Client {
 
         /**

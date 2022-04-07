@@ -1,6 +1,7 @@
 // CHECKSTYLE:MagicNumber:OFF
 package com.localhost22.greynoise4j;
 
+import com.localhost22.greynoise4j.api.GreynoiseException;
 import com.localhost22.greynoise4j.api.IllegalEndpointException;
 import com.localhost22.greynoise4j.client.GreynoiseClient;
 import com.localhost22.greynoise4j.structs.HostContextInformation;
@@ -54,6 +55,11 @@ public class GreynoiseClientTest {
      * Greynoise's tag for Mirai.
      */
     private static final String MIRAI_TAG = "Mirai";
+
+    /**
+     * An invalid Greynoise API key.
+     */
+    private static final String INVALID_KEY = "AAAA";
 
     /**
      * The community client instance.
@@ -186,6 +192,28 @@ public class GreynoiseClientTest {
             }));
         });
 
+        Assertions.assertTrue(ctx.awaitCompletion(TIMEOUT, TimeUnit.SECONDS));
+        if (ctx.failed()) {
+            Assertions.fail();
+        }
+    }
+
+    /**
+     * Test that the enterprise client throws an exception when created with an invalid
+     * api key.
+     * @param ctx test context
+     * @throws InterruptedException if the request is interrupted
+     */
+    @DisplayName("Enterprise API | Test Exception Thrown On Fail")
+    @Order(6)
+    @Test
+    public void testEnterpriseInvalid(final VertxTestContext ctx) throws InterruptedException {
+        GreynoiseClient.enterprise(INVALID_KEY).getQuickHostInformation(GOOGLE_ADDRESS).onFailure(
+                (resp) -> {
+                    ctx.completeNow();
+                    Assertions.assertTrue(resp instanceof GreynoiseException);
+                }
+        );
         Assertions.assertTrue(ctx.awaitCompletion(TIMEOUT, TimeUnit.SECONDS));
         if (ctx.failed()) {
             Assertions.fail();

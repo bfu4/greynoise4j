@@ -2,6 +2,7 @@ package com.localhost22.greynoise4j.client;
 
 import com.localhost22.greynoise4j.api.ClientType;
 import com.localhost22.greynoise4j.api.Endpoint;
+import com.localhost22.greynoise4j.api.GreynoiseException;
 import com.localhost22.greynoise4j.api.GreynoiseResponse;
 import com.localhost22.greynoise4j.api.IllegalEndpointException;
 import com.localhost22.greynoise4j.api.IpArray;
@@ -66,6 +67,9 @@ public final class GreynoiseClient extends Client {
      * @return enterprise client
      */
     public static GreynoiseClient enterprise(final String apiKey) {
+        if (apiKey.isEmpty()) {
+            throw GreynoiseException.create("invalid api key!");
+        }
         return enterprise(apiKey, new WebClientOptions());
     }
 
