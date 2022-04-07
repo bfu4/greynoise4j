@@ -34,8 +34,8 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:bfu4/jnoise.git</connection>
-        <url>scm:git:git://github.com/bfu4/jnoise.git</url>
+        <connection>scm:git:git@github.com:bfu4/greynoise4j.git</connection>
+        <url>scm:git:git://github.com/bfu4/greynoise4j.git</url>
         <tag>HEAD</tag>
     </scm>
 
