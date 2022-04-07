@@ -21,6 +21,7 @@ public enum ClientType {
             Endpoint.NOISE_CONTEXT,
             Endpoint.RIOT,
             Endpoint.NOISE_MULTI_QUICK,
+            Endpoint.NOISE_MULTI_CONTEXT,
             Endpoint.META_METADATA
     );
 
